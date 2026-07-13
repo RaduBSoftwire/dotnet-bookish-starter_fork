@@ -44,7 +44,7 @@ public class AuthorController : ControllerBase
 
         const string sql = "DELETE FROM Author WHERE AuthorID = @AuthorId";
 
-        int rowsAffected = await connection.ExecuteAsync(sql, new { AuthorId = authorId });
+        await connection.ExecuteAsync(sql, new { AuthorId = authorId });
 
         return NoContent();
     }
@@ -56,7 +56,7 @@ public class AuthorController : ControllerBase
 
         const string sql = "UPDATE Author SET AuthorName = @AuthorName WHERE AuthorID = @AuthorId";
 
-        int rowsAffected = await connection.ExecuteAsync(sql, author);
+        await connection.ExecuteAsync(sql, author);
 
         return NoContent();
     }
