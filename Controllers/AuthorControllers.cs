@@ -38,27 +38,25 @@ public class AuthorController : ControllerBase
     }
     
     [HttpDelete]
-    public async Task<IActionResult> Delete([FromBody] Author id)
+    public async Task<IActionResult> Delete([FromQuery] long authorId)
     {
-
         using var connection = new SqlConnection(_connectionString);
 
         const string sql = "DELETE FROM Author WHERE AuthorID = @AuthorId";
 
-        await connection.ExecuteAsync(sql, id);
+        int rowsAffected = await connection.ExecuteAsync(sql, new { AuthorId = authorId });
 
         return NoContent();
     }
-    
-    [HttpPatch]
-    public async Task<IActionResult> Patch([FromBody] Author id)
-    {
 
+    [HttpPatch]
+    public async Task<IActionResult> Patch([FromBody] Author author)
+    {
         using var connection = new SqlConnection(_connectionString);
 
-        const string sql = "DELETE FROM Author WHERE AuthorID = @AuthorId";
+        const string sql = "UPDATE Author SET AuthorName = @AuthorName WHERE AuthorID = @AuthorId";
 
-        await connection.ExecuteAsync(sql, id);
+        int rowsAffected = await connection.ExecuteAsync(sql, author);
 
         return NoContent();
     }
