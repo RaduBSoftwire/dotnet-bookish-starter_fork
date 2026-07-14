@@ -24,7 +24,7 @@ public class AuthorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Author> Post([FromBody] Author author)
+    public async Task<IActionResult> Post([FromBody] Author author)
     {
         using var connection = new SqlConnection(_connectionString);
     
@@ -34,7 +34,7 @@ public class AuthorController : ControllerBase
 
         await connection.ExecuteAsync(sql, author);
 
-        return author;
+        return Ok($"AuthorName: {author.AuthorName} | AuthorID: {author.AuthorID}");
     }
     
     [HttpDelete]
@@ -46,7 +46,7 @@ public class AuthorController : ControllerBase
 
         await connection.ExecuteAsync(sql, new { AuthorId = authorId });
 
-        return NoContent();
+        return Ok($"Deleted AuthorID: {authorId}");
     }
 
     [HttpPatch]
@@ -58,6 +58,6 @@ public class AuthorController : ControllerBase
 
         await connection.ExecuteAsync(sql, author);
 
-        return NoContent();
+        return Ok($"New AuthorName: {author.AuthorName} | AuthorID: {author.AuthorID}");
     }
 }
